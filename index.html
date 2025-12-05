@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>DEBATE: Το Ανατολικό Ζήτημα (1875-1881)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #fdfbf7;
+      --card-bg: #ffffff;
+      
+      /* Παλέτα Χρωμάτων Εποχής 19ου αιώνα */
+      --burgundy: #800020;   
+      --royal-blue: #002366; 
+      --gold: #D4AF37;       
+      
+      /* Χρώματα Ομάδων */
+      --color-solon: #002366;      /* Αγγλία/Γερμανία */
+      --color-peisistratos: #b71c1c; /* Ρωσία */
+      --color-kleisthenis: #1976D2;  /* Ελλάδα */
+      --color-aristocracy: #4a148c;  /* Οθωμανική Αυτ. */
+      --color-democracy: #2e7d32;    /* Βουλγαρία/Σλάβοι */
+      --color-judges: #455a64;
+
+      --text-main: #333333;
+      --border: #ccc;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #fff3e0 0, #fdfbf7 40%, #efebe9 100%);
+      color: var(--text-main);
+      padding-bottom: 60px;
+    }
+
+    /* --- Header --- */
+    header { 
+      padding: 1rem; text-align: center; border-bottom: 4px solid var(--gold); 
+      background: var(--burgundy); color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .title-row { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .site-logo { height: 70px; width: auto; background: white; padding: 5px; border-radius: 50%; border: 2px solid var(--gold); }
+    header h1 { margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 0px #000; }
+    header h2 { margin: 0.3rem 0 0; font-size: 1rem; color: var(--gold); font-weight: 400; }
+
+    main { max-width: 1000px; margin: 0 auto 2rem; padding: 0 1rem 2rem; }
+
+    /* --- Step Indicator --- */
+    .step-indicator { display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0 1.5rem; flex-wrap: wrap; }
+    .step-dot { width: 12px; height: 12px; border-radius: 50%; background: #cfd8dc; transition: all 0.3s; border: 1px solid #999; }
+    .step-dot.active { background: var(--gold); transform: scale(1.3); box-shadow: 0 0 8px var(--gold); border-color: var(--burgundy); }
+
+    /* --- Cards --- */
+    .card {
+      background: var(--card-bg); border-radius: 12px; padding: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 35, 102, 0.1);
+      border: 1px solid var(--royal-blue); margin-bottom: 1rem;
+    }
+    .step { display: none; }
+    .step.active { display: block; animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+    h2 { margin-top: 0; font-size: 1.5rem; color: var(--royal-blue); border-left: 5px solid var(--burgundy); padding-left: 10px; }
+    h3 { margin-top: 1rem; font-size: 1.15rem; color: var(--burgundy); font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 5px;}
+    p { font-size: 1rem; line-height: 1.6; }
+    
+    blockquote {
+        background: #f9f9f9;
+        border-left: 5px solid var(--royal-blue);
+        margin: 1.5em 10px;
+        padding: 0.5em 10px;
+        font-style: italic;
+        color: #555;
+    }
+
+    /* --- Media Styling --- */
+    .media-box {
+        background: #f4f6f8;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-left: 5px solid var(--gold);
+    }
+    video {
+        width: 100%;
+        margin-top: 10px;
+        outline: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    /* --- Image Styling --- */
+    .cover-image {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      max-height: 400px; 
+      object-fit: contain;
+      margin: 1rem auto;
+      border-radius: 8px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: zoom-in; 
+      transition: all 0.3s ease;
+    }
+
+    .cover-image.fullscreen {
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100vw !important; 
+        height: 100vh !important; 
+        max-height: 100vh !important;
+        z-index: 10000; 
+        background-color: rgba(0,0,0,0.95);
+        border: none; 
+        border-radius: 0; 
+        padding: 20px; 
+        box-sizing: border-box; 
+        cursor: zoom-out;
+    }
+
+    /* --- Flashcards CSS --- */
+    .flashcards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .flashcard-container {
+        background-color: transparent;
+        height: 220px; 
+        perspective: 1000px;
+        cursor: pointer;
+    }
+    .flashcard-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        border-radius: 12px;
+    }
+    .flashcard-container.flipped .flashcard-inner {
+        transform: rotateY(180deg);
+    }
+    .flashcard-front, .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+    .flashcard-front {
+        color: white;
+    }
+    .flashcard-back {
+        background-color: #2c3e50; 
+        color: white;
+        transform: rotateY(180deg);
+        border: 3px solid var(--gold);
+        font-size: 0.95rem;
+    }
+    .fc-emoji { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    .fc-content { font-size: 1.05rem; line-height: 1.5; font-weight: 600; }
+    .fc-hint { font-size: 0.8rem; margin-top: 15px; opacity: 0.9; font-style: italic; border: 1px solid white; padding: 2px 8px; border-radius: 15px; }
+
+    /* --- Pills Styling --- */
+    .pill-header {
+      color: white; 
+      padding: 8px 15px; border-radius: 20px; text-align: center; margin-bottom: 10px;
+      font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-shadow: 1px 1px 2px rgba(0,0,0,0.3); display: block;
+    }
+    .bg-solon { background-color: var(--color-solon); }           
+    .bg-peisistratos { background-color: var(--color-peisistratos); } 
+    .bg-kleisthenis { background-color: var(--color-kleisthenis); }   
+    .bg-aristocracy { background-color: var(--color-aristocracy); }   
+    .bg-democracy { background-color: var(--color-democracy); }       
+    .bg-judges { background-color: var(--color-judges); }
+
+    /* --- Inputs --- */
+    input, textarea, select {
+      width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border);
+      font-size: 1rem; margin: 0.2rem 0 0.6rem; outline: none; background: #fff; color: #333;
+    }
+    input:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3); }
+    .meta-inputs-card {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+      margin: 1rem 0; background: #e8eaf6; padding: 1.2rem; border-radius: 8px; border: 1px solid var(--royal-blue);
+    }
+    .meta-inputs-card label { font-size: 0.9rem; font-weight: bold; color: var(--burgundy); display: block; margin-bottom: 0.4rem; }
+
+    /* --- Buttons --- */
+    .btn-row { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 0.5rem; flex-wrap: wrap; }
+    
+    button {
+      border: none; border-radius: 30px; padding: 0.7rem 1.5rem; font-size: 1rem; cursor: pointer; font-weight: 600;
+      background: var(--royal-blue); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s;
+    }
+    
+    button.secondary { background: white; color: var(--royal-blue); border: 2px solid var(--royal-blue); box-shadow: none; }
+    button.small { padding: 0.4rem 1rem; font-size: 0.9rem; }
+    .btn-burgundy { background-color: var(--burgundy); color: white; }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); opacity: 0.9; }
+    button.secondary:hover { background: #f0f4ff; }
+
+    /* --- Role Boxes --- */
+    .role-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1rem; margin-top: 1rem; }
+    .role-box { padding: 1rem; border-radius: 8px; border: 1px solid #ddd; background: #fafafa; position: relative; border-top: 4px solid var(--royal-blue); }
+    .role-box h4 { margin: 0 0 0.5rem 0; color: var(--burgundy); font-size: 1.1rem; }
+    .role-badge { position: absolute; top: 10px; right: 10px; font-size: 1.5rem; opacity: 0.2; }
+
+    /* --- Vote Section --- */
+    .vote-inputs {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;
+        background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee;
+    }
+    .vote-box { text-align: center; }
+
+    /* --- Charts --- */
+    .bar-chart { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .bar-row { display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; }
+    .bar-label { width: 140px; text-align: right; font-weight: 600; color: var(--royal-blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { flex: 1; background: #eceff1; border-radius: 10px; height: 16px; overflow: hidden; }
+    .bar-fill { height: 100%; transition: width 0.5s ease-out; }
+
+    /* --- Rubric --- */
+    .rubric-container { overflow-x: auto; }
+    .rubric-table { margin-top: 1rem; width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 700px; }
+    .rubric-cell { padding: 8px; border: 1px solid #ddd; text-align: center; vertical-align: middle; }
+    .rubric-header { background: var(--royal-blue); color: white; font-weight: bold; }
+    .rubric-first-col { text-align: left; width: 25%; font-weight: bold; background: #f9f9f9; color: var(--burgundy); }
+    .rubric-input { width: 50px; text-align: center; margin: 0 auto; }
+
+    /* --- Timer --- */
+    .timer-container { 
+        background: var(--royal-blue); color: white; padding: 1rem; border-radius: 10px; 
+        margin-bottom: 1.5rem; text-align: center; border: 4px solid var(--gold); 
+    }
+    .timer-display { font-size: 2.5rem; font-weight: 700; font-family: 'Courier New', monospace; margin: 0.5rem 0; color: var(--gold); }
+    .timer-container label { color: white; font-weight: bold; }
+    .timer-container input { color: #333; text-align: center; }
+
+    /* --- Footer --- */
+    footer {
+        position: fixed; bottom: 0; left: 0; width: 100%;
+        background-color: var(--burgundy); color: white;
+        text-align: center; padding: 10px; font-size: 0.85rem;
+        border-top: 3px solid var(--gold); z-index: 100;
+    }
+    
+    /* --- Glossary Styles --- */
+    .glossary-btn {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        background-color: var(--burgundy);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        border: 2px solid var(--gold);
+        z-index: 999;
+        display: none; /* Hidden by default */
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn { from {transform: scale(0); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+    
+    .glossary-modal {
+        display: none; 
+        position: fixed; 
+        z-index: 2000; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.6); 
+        backdrop-filter: blur(3px);
+    }
+    
+    .glossary-content {
+        background-color: #fefefe;
+        margin: 10% auto; 
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .close-modal {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close-modal:hover { color: black; }
+    
+    .glossary-list dt {
+        font-weight: bold;
+        color: var(--burgundy);
+        margin-top: 15px;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 2px;
+    }
+    .glossary-list dd {
+        margin-left: 0;
+        margin-top: 5px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #444;
+    }
+
+    /* --- Print --- */
+    #print-summary { display: none; padding: 2rem; font-family: 'Georgia', serif; color: black; }
+    @media print {
+      body { background: white; padding-bottom: 0; }
+      header, main, footer, .no-print, .step-indicator, .glossary-btn { display: none !important; }
+      #print-summary { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <img src="logo.png" alt="Λογότυπο" class="site-logo">
+    <div>
+      <h1>Ιστορικό Εργαστήριο</h1>
+      <h2>DEBATE: Το Ανατολικό Ζήτημα (1875-1881)</h2>
+    </div>
+  </div>
+  <div class="step-indicator" id="stepIndicator"></div>
+</header>
+
+<main>
+  
+  <section class="card step active">
+    <h2>Βήμα 1: Στοιχεία Διεξαγωγής</h2>
+    <p>Καλώς ήρθατε στο Διπλωματικό Συνέδριο. Συμπληρώστε τα στοιχεία της τάξης.</p>
+    <div class="meta-inputs-card">
+      <div><label>Όνομα Τμήματος/Ομάδας:</label><input type="text" id="meta-group" placeholder="π.χ. Β3 Λυκείου"></div>
+      <div><label>Ημερομηνία:</label><input type="date" id="meta-date"></div>
+      <div><label>Μάθημα:</label><input type="text" id="meta-class" value="Ιστορία Νεότερη & Σύγχρονη"></div>
+    </div>
+    <div class="btn-row"><span></span><button onclick="nextStep()">Είσοδος στο Συνέδριο ➜</button></div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 2: Ιστορικό Πλαίσιο</h2>
+    <div style="text-align:center;">
+        <img src="image.png" alt="Γελοιογραφία Ανατολικού Ζητήματος" class="cover-image" onclick="this.classList.toggle('fullscreen')" title="Κάντε κλικ για μεγέθυνση">
+        <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Κλικ στην εικόνα για μεγέθυνση)<br><strong>Πηγή:</strong> Κωφός Ε., <em>Η Ελλάδα και το ανατολικό ζήτημα 1875 - 1881</em>, Εκδοτική Αθηνών, Αθήνα 2001, σ. 292</p>
+    </div>
+    <p>Βρισκόμαστε στο τέλος του 19ου αιώνα. Η Οθωμανική Αυτοκρατορία καταρρέει. Οι Μεγάλες Δυνάμεις (Αγγλία, Ρωσία, Αυστρία) και οι Βαλκανικοί λαοί (Έλληνες, Σλάβοι) συγκρούονται για το μέλλον της περιοχής. Ποιος θα επικρατήσει;</p>
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Πολυμεσικό Υλικό ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 3: Πολυμεσικό Υλικό</h2>
+    <p>Μελετήστε το παρακάτω υλικό πριν προχωρήσετε στο Debate.</p>
+    
+    <div class="media-box">
+        <h3 style="margin-top:0;">🎬Πηγή Α: Ιστορικό Βίντεο</h3>
+        <p>Παρακολουθήστε το ιστορικό απόσπασμα:</p>
+        <video controls>
+            <source src="democracy.mp4" type="video/mp4">
+            Το πρόγραμμα περιήγησης δεν υποστηρίζει την αναπαραγωγή βίντεο.
+        </video>
+        <p style="font-size:0.8rem; color:#555; margin-top:8px; line-height:1.4;">
+            <strong>Πηγή Video:</strong> «Η κρίση του Ανατολικού Ζητήματος (1875-1881)» (4.18')<br>
+            <em>ΝΕΟΤΕΡΗ ΕΛΛΗΝΙΚΗ ΠΟΛΙΤΙΚΗ ΙΣΤΟΡΙΑ 1750-1940</em> / Κύκλος: Β Επεισόδιο: 003, Η ΒΑΣΙΛΕΥΟΜΕΝΗ ΔΗΜΟΚΡΑΤΙΑ 1863-1923, ΕΡΤ, 1992<br>
+            <a href="https://archive.ert.gr/69161/" target="_blank" style="color:var(--royal-blue);">https://archive.ert.gr/69161/</a>
+        </p>
+    </div>
+
+    <div class="media-box" style="border-left-color: var(--royal-blue);">
+        <h3 style="margin-top:0;">📜 Πηγή Β: Γελοιογραφία [Η Ρωσία, η Αγγλία και η Αυστρία ασχολούνται με το «Ανατολικό Ζήτημα» Γελοιογραφία (1878)]</h3>
+        <p>Μελετήστε την ιστορική πηγή: (Κωφός Ε., Η Ελλάδα και το ανατολικό ζήτημα 1875 - 1881, Εκδοτική Αθηνών, Αθήνα 2001, σ. 292)</p>
+        <div style="text-align:center;">
+            <img src="source.jpg" alt="Ιστορική Πηγή" class="cover-image" onclick="this.classList.toggle('fullscreen')" title="Κάντε κλικ για μεγέθυνση">
+            <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Κλικ στην εικόνα για μεγέθυνση)</p>
+        </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Κειμενικές Πηγές ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 4: Κειμενικές Πηγές</h2>
+    <p>Διαβάστε προσεκτικά τα παρακάτω αποσπάσματα για να αντλήσετε επιχειρήματα.</p>
+    
+    <div class="media-box" style="border-left-color: var(--burgundy); background-color: #fffaf0;">
+        <h3 style="color:var(--burgundy);">Πηγή Γ</h3>
+        <blockquote>
+            «Η αυτοκρατορία απέφυγε τον διαμελισμό -όχι όμως και την σταδιακή συρρίκνωση της-, επειδή ο διαμελισμός της απειλούσε ν' ανατρέψει την ισορροπία ισχύος και επιρροής των μεγάλων δυνάμεων, άλλα και επειδή η προϊούσα παρακμή και η αδυναμία της επρόσφεραν πλήθος ευκαιριών στους μνηστήρες των εδαφών της ν' αποκομίζουν όλο και περισσότερα κέρδη. Η γειτνίαση με δύο από τις μεγάλες ευρωπαϊκές δυνάμεις, την Αυστρία και την Ρωσία, επέβαλαν στις άλλες δυνάμεις, μάλιστα δε στην Βρετανία και την Γαλλία, να αναλάβουν τον ρόλο των προστάτιδων δυνάμεων της εδαφικής ακεραιότητας της αυτοκρατορίας. Το ενδεχόμενο να περιέλθουν οι κτήσεις του Οθωμανού Σουλτάνου στην κυριότητα των Αψβούργων και των Ρωμανώφ, οι προσπάθειες της Βρετανίας και της Γαλλίας ν' αποστρέψουν αυτό το ενδεχόμενο και οι αγώνες των υποτελών λαών της αυτοκρατορίας ν' αποκτήσουν εθνικά κράτη στην επικράτεια της συνιστούσαν το διεθνές ζήτημα που έμεινε γνωστό ως "Ανατολικό Ζήτημα".»
+        </blockquote>
+        <p style="text-align:right; font-size:0.9rem;"><em>Κολλιόπουλος Ι., Ιστορία της Ελλάδος από το 1800. Η διαμόρφωση και η άσκηση της εθνικής πολιτικής, Βάνιας, Θεσσαλονίκη 2002, τ. Β ́, σ. 20</em></p>
+    </div>
+
+    <div class="media-box" style="border-left-color: var(--burgundy); background-color: #fffaf0;">
+        <h3 style="color:var(--burgundy);">Πηγή Δ</h3>
+        <blockquote>
+            «Η συνθήκη του Αγίου Στεφάνου και το συνέδριο του Βερολίνου εγκαινίασαν μια νέα φάση, όχι τόσο λόγω του γεγονότος και όχι μόνο λόγω των διαδοχικών εδαφικών ανακατατάξεων, αυτών καθαυτών, όσο λόγω του ότι οι ανακατατάξεις αυτές οδήγησαν άμεσα σε μια διαδικασία μόνιμης αντιπαραθέσεως των βαλκανικών εθνικισμών. Στο έξης, τα εθνικά αλυτρωτικά οράματα έγιναν εγχειρηματικά και άμεσης εφαρμογής, και όχι πια "ακαδημαϊκές" επιθυμίες εθνικής ολοκληρώσεως που προσέκρουαν διαρκώς στην απαγορευτική άρνηση των Δυνάμεων να δεχθούν οποιαδήποτε τροποποίηση του εδαφικού καθεστώτος. Από το 1875 και πέρα οι Μεγάλες Δυνάμεις δεν ήταν πια σε θέση να επιβάλλουν την αποκλειστική τους θέληση στο χώρο της Βαλκανικής. Κατά τα πρώτα 50 χρόνια μετά την απελευθέρωση, η ελληνική "Μεγάλη Ιδέα" - όπως και αντίστοιχες των βαλκανικών γειτόνων προσέκρουε σε μια οθωμανική αυτοκρατορία "εγγυημένη" από τα κοινά συμφέροντα της ευρωπαϊκής συγχορδίας, με αποτέλεσμα την αποτελμάτωση των εθνικών ονείρων, που μεταθέτονταν στις ελληνικές καλένδες. Στο έξης οι ενδιαφερόμενοι που προσβλέπουν στην ίδια κληρονομιά υψώνουν όλοι μαζί το ανάστημα τους και οι εθνικές βλέψεις δεν προσκρούουν πια σε μια ατελεύτητη αναμονή, αλλά αντίθετα κινδυνεύουν να καταβαραθρωθούν από τη μια μέρα στην άλλη. Από την περίοδο των άγονων διεκδικήσεων περνάμε απότομα στην περίοδο της άμεσης αναμετρήσεως.»
+        </blockquote>
+        <p style="text-align:right; font-size:0.9rem;"><em>Τσουκαλάς Κ., «Η ανορθωτική προσπάθεια του Χαρίλαου Τρικούπη», Ιστορία του Ελληνικού Έθνους, Εκδοτική Αθηνών, Αθήνα 1977, τ. ΙΔ ́, σ. 9</em></p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Γνωριμία με τις Πλευρές ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 5: Οι 5 Αντιμαχόμενες Πλευρές</h2>
+    <div class="role-grid">
+      <div class="role-box"><div class="role-badge">🇬🇧</div><h4>1. Αγγλία / Δύση</h4><p class="role-desc">«Ισορροπία & Realpolitik. Όχι στη Ρωσική κάθοδο.»</p></div>
+      <div class="role-box"><div class="role-badge">🇷🇺</div><h4>2. Ρωσία</h4><p class="role-desc">«Πανσλαβισμός. Έξοδος στο Αιγαίο.»</p></div>
+      <div class="role-box"><div class="role-badge">🇬🇷</div><h4>3. Ελλάδα</h4><p class="role-desc">«Μεγάλη Ιδέα & Ιστορικά Δίκαια.»</p></div>
+      <div class="role-box"><div class="role-badge">🇹🇷</div><h4>4. Οθωμανική Αυτ.</h4><p class="role-desc">«Εδαφική Ακεραιότητα & Επιβίωση.»</p></div>
+      <div class="role-box"><div class="role-badge">🇧🇬</div><h4>5. Βουλγαρία/Σλάβοι</h4><p class="role-desc">«Εθνική Αφύπνιση & Μεγάλη Βουλγαρία.»</p></div>
+      <div class="role-box"><div class="role-badge">⚖️</div><h4>6. Ιστορικοί Κριτές</h4><p class="role-desc">Παρατηρητές του Συνεδρίου.</p></div>
+    </div>
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Αρχική Ψηφοφορία ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 6: Πρώτη Εκτίμηση (Δημοσκόπηση)</h2>
+    <p>Ποια πλευρά πιστεύετε ότι έχει τα πιο δίκαια/ισχυρά επιχειρήματα μέχρι τώρα;</p>
+    
+    <div class="vote-inputs">
+      <div class="vote-box"><span class="pill-header bg-solon">Αγγλία/Δύση</span><input type="number" id="pre-v1" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-peisistratos">Ρωσία</span><input type="number" id="pre-v2" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-kleisthenis">Ελλάδα</span><input type="number" id="pre-v3" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-aristocracy">Οθωμανική Αυτ.</span><input type="number" id="pre-v4" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-democracy">Βουλγαρία/Σλάβοι</span><input type="number" id="pre-v5" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-judges">Δ.Ξ. / Δ.Α.</span><input type="number" id="pre-v6" min="0" value="0"></div>
+    </div>
+
+    <button class="small btn-burgundy no-print" onclick="calcPreVote()" style="margin-top:10px;">Καταγραφή Ψήφων</button>
+    <div id="pre-results" style="margin-top:0.5rem; font-weight:bold;"></div>
+    <div id="pre-chart" class="bar-chart"></div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Προετοιμασία Επιχειρημάτων ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 7: Καταγραφή Επιχειρημάτων</h2>
+    <p>Σημειώστε τα βασικά επιχειρήματα κάθε διπλωματικής αποστολής.</p>
+    
+    <div class="role-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+      <div>
+        <h4 class="pill-header bg-solon">🇬🇧 Αγγλία/Γερμανία</h4>
+        <div id="arg-container-1"></div>
+        <button class="small secondary" onclick="addArg(1)">+ Σημείωση</button>
+      </div>
+      <div>
+        <h4 class="pill-header bg-peisistratos">🇷🇺 Ρωσία</h4>
+        <div id="arg-container-2"></div>
+        <button class="small secondary" onclick="addArg(2)">+ Σημείωση</button>
+      </div>
+      <div>
+        <h4 class="pill-header bg-kleisthenis">🇬🇷 Ελλάδα</h4>
+        <div id="arg-container-3"></div>
+        <button class="small secondary" onclick="addArg(3)">+ Σημείωση</button>
+      </div>
+      <div>
+        <h4 class="pill-header bg-aristocracy">🇹🇷 Οθωμανική Αυτ.</h4>
+        <div id="arg-container-4"></div>
+        <button class="small secondary" onclick="addArg(4)">+ Σημείωση</button>
+      </div>
+      <div>
+        <h4 class="pill-header bg-democracy">🇧🇬 Βουλγαρία/Σλάβοι</h4>
+        <div id="arg-container-5"></div>
+        <button class="small secondary" onclick="addArg(5)">+ Σημείωση</button>
+      </div>
+    </div>
+    
+    <div class="btn-row no-print" style="margin-top:1rem;">
+      <button class="small secondary" onclick="printArguments()">🖨️ Εκτύπωση Σημειώσεων</button>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Αγώνες Λόγου & Αξιολόγηση ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 8: Η Ώρα της Κρίσης (Συνέδριο Βερολίνου)</h2>
+    
+    <div class="timer-container">
+      <h3 style="margin-top:0; color:var(--gold); border:none;">⏱️ Χρονόμετρο Αγόρευσης</h3>
+      <div style="display:flex; justify-content:center; gap:10px; color:white;">
+        <label>Λεπτά:</label> <input type="number" id="timer-min" value="2" min="0" style="width:60px;">
+        <label>Δευτ:</label> <input type="number" id="timer-sec" value="0" min="0" max="59" style="width:60px;">
+      </div>
+      <div class="timer-display" id="timer-display">02:00</div>
+      <div class="btn-row no-print" style="justify-content:center;">
+        <button class="small" style="background:var(--gold); color:black;" onclick="startTimer()">▶ Έναρξη</button>
+        <button class="small secondary" onclick="resetTimer()">⏹ Διακοπή</button>
+      </div>
+    </div>
+
+    <h3>Φύλλο Αξιολόγησης (Για τους Κριτές)</h3>
+    <div class="rubric-container">
+        <table class="rubric-table">
+            <thead>
+                <tr class="rubric-row rubric-header">
+                    <th class="rubric-cell rubric-first-col">Κριτήριο</th>
+                    <th class="rubric-cell">Αγγλία</th>
+                    <th class="rubric-cell">Ρωσία</th>
+                    <th class="rubric-cell">Ελλάδα</th>
+                    <th class="rubric-cell">Οθωμανοί</th>
+                    <th class="rubric-cell">Σλάβοι</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="rubric-row">
+                    <td class="rubric-cell rubric-first-col">Ιστορική Ακρίβεια</td>
+                    <td class="rubric-cell"><input type="number" id="r1-c1" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r2-c1" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r3-c1" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r4-c1" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r5-c1" class="rubric-input" min="1" max="5"></td>
+                </tr>
+                <tr class="rubric-row">
+                    <td class="rubric-cell rubric-first-col">Πειστικότητα</td>
+                    <td class="rubric-cell"><input type="number" id="r1-c2" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r2-c2" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r3-c2" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r4-c2" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r5-c2" class="rubric-input" min="1" max="5"></td>
+                </tr>
+                <tr class="rubric-row">
+                    <td class="rubric-cell rubric-first-col">Αντίλογος</td>
+                    <td class="rubric-cell"><input type="number" id="r1-c3" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r2-c3" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r3-c3" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r4-c3" class="rubric-input" min="1" max="5"></td>
+                    <td class="rubric-cell"><input type="number" id="r5-c3" class="rubric-input" min="1" max="5"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <button class="small secondary no-print" style="margin-top:1rem; width:100%;" onclick="calcRubric()">Υπολογισμός Σκορ</button>
+    <div id="rubric-result" style="margin-top:1rem; font-weight:bold; text-align:center; color:var(--burgundy);"></div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <button onclick="nextStep()">Τελική Ψηφοφορία ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 9: Τελική Ετυμηγορία</h2>
+    <p>Μετά την ακρόαση των επιχειρημάτων, ποια λύση προκρίνει το Συνέδριο;</p>
+    
+    <div class="vote-inputs">
+      <div class="vote-box"><span class="pill-header bg-solon">Αγγλία/Δύση</span><input type="number" id="post-v1" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-peisistratos">Ρωσία</span><input type="number" id="post-v2" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-kleisthenis">Ελλάδα</span><input type="number" id="post-v3" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-aristocracy">Οθωμανική Αυτ.</span><input type="number" id="post-v4" min="0" value="0"></div>
+      <div class="vote-box"><span class="pill-header bg-democracy">Βουλγαρία/Σλάβοι</span><input type="number" id="post-v5" min="0" value="0"></div>
+    </div>
+    
+    <button class="small btn-burgundy no-print" onclick="calcPostVote()" style="margin-top:10px;">Εξαγωγή Αποτελέσματος</button>
+    <div id="post-results" style="margin-top:0.5rem;"></div>
+    <div id="post-chart" class="bar-chart"></div>
+
+    <div style="margin-top:2rem; padding:1.5rem; border:2px solid var(--gold); border-radius:10px; background:#fff9c4;">
+      <h3 style="margin-top:0; border:none;">Συλλογικό Συμπέρασμα Τάξης</h3>
+      <textarea id="conclusion-text" placeholder="Τελικά, οι αποφάσεις του 1878 έφεραν σταθερότητα ή νέες εντάσεις;"></textarea>
+    </div>
+    
+    <div style="text-align:center; margin-top: 2rem;">
+        <h3 style="color:var(--burgundy); border:none; margin-bottom:10px;">📸 Ανακεφαλαίωση Χάρτη</h3>
+        <img src="map.png" alt="Χάρτης Βαλκανίων" class="cover-image" onclick="this.classList.toggle('fullscreen')" title="Κάντε κλικ για μεγέθυνση">
+        <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Κλικ στην εικόνα για μεγέθυνση)</p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      <div style="display:flex; gap:10px;">
+        <button class="secondary" onclick="printAll()">🖨️ Τελική Εκτύπωση</button>
+        <button onclick="nextStep()">Κάρτες Εμπέδωσης ➜</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 10: Κάρτες Εμπέδωσης (Flashcards)</h2>
+    <p>Ελέγξτε τις γνώσεις σας για το Ανατολικό Ζήτημα! Κάντε κλικ για απάντηση.</p>
+    
+    <div class="flashcards-grid">
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">🌍</div>
+                <div class="fc-content">Ποιοι ήταν οι πρώτοι Βαλκάνιοι που ίδρυσαν ανεξάρτητο εθνικό κράτος τον 19ο αιώνα;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Οι Έλληνες.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">📜</div>
+                <div class="fc-content">Πότε κέρδισαν την αυτονομία τους οι Σέρβοι;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Την περίοδο 1812-1815.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🇧🇬</div>
+                <div class="fc-content">Με ποιο γεγονός εκφράστηκαν οι σχετικές κινήσεις των Βουλγάρων για εθνική χειραφέτηση το 1870;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Με τη δημιουργία της Εξαρχίας, της ανεξάρτητης βουλγαρικής εκκλησίας.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🎩</div>
+                <div class="fc-content">Ποιες εξεγέρσεις προκάλεσε η ανάδυση των εθνικών ιδεών στα Βαλκάνια την περίοδο 1875-1876;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Επαναστάσεις στην Ερζεγοβίνη, στη Βοσνία και στη Βουλγαρία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">🏛️</div>
+                <div class="fc-content">Ποια δύναμη κήρυξε τον πόλεμο στην Οθωμανική αυτοκρατορία το 1877, αντιδρώντας στις μαζικές σφαγές;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Ρωσία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">✂️</div>
+                <div class="fc-content">Σε ποιες περιοχές ξέσπασαν επαναστάσεις των ελληνικών πληθυσμών το 1878;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Στη Θεσσαλία, στη Μακεδονία, στην Ήπειρο και στην Κρήτη.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">🏝️</div>
+                <div class="fc-content">Ποια συνθήκη υποχρεώθηκε να υπογράψει ο σουλτάνος μετά την ήττα του στον ρωσοτουρκικό πόλεμο του 1877-1878;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Τη συνθήκη του Αγίου Στεφάνου (Φεβρουάριος 1878).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🇬🇷</div>
+                <div class="fc-content">Ποιος ήταν ο κύριος όρος της συνθήκης του Αγίου Στεφάνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η δημιουργία της αυτόνομης ηγεμονίας της Βουλγαρίας, της «Μεγάλης Βουλγαρίας».</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🇦🇹</div>
+                <div class="fc-content">Τα συμφέροντα ποιων δύο χωρών υπονόμευε η δημιουργία της «Μεγάλης Βουλγαρίας»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Τόσο τις ελληνικές επιδιώξεις όσο και τα αγγλικά συμφέροντα στην περιοχή.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">💭</div>
+                <div class="fc-content">Ποιες χώρες απαίτησαν την αναθεώρηση της συνθήκης του Αγίου Στεφάνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Μεγάλη Βρετανία και η Γερμανία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">⚔️</div>
+                <div class="fc-content">Ποιο διεθνές συνέδριο συγκλήθηκε τον Ιούνιο του 1878 για την αναθεώρηση της συνθήκης του Αγίου Στεφάνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Το συνέδριο του Βερολίνου.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">💣</div>
+                <div class="fc-content">Σύμφωνα με το συνέδριο του Βερολίνου, τι δημιουργήθηκε αντί της «Μεγάλης Βουλγαρίας»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Μια πολύ μικρότερη αυτόνομη Βουλγαρία και μια αυτόνομη Ανατολική Ρωμυλία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🌍</div>
+                <div class="fc-content">Ποιες τρεις βαλκανικές χώρες κηρύχθηκαν ανεξάρτητες στο συνέδριο του Βερολίνου (1878);</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Σερβία, η Ρουμανία και το Μαυροβούνιο.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">📜</div>
+                <div class="fc-content">Σε ποια χώρα ανατέθηκε η διοίκηση της Βοσνίας-Ερζεγοβίνης από το συνέδριο του Βερολίνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Στην Αυστροουγγαρία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">🇧🇬</div>
+                <div class="fc-content">Σε ποια χώρα παραχωρήθηκε η Κύπρος με τις αποφάσεις του συνεδρίου του Βερολίνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Στην Αγγλία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">🎩</div>
+                <div class="fc-content">Ποιες περιοχές παρέμειναν στην Οθωμανική αυτοκρατορία μετά το συνέδριο του Βερολίνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Μακεδονία, η Θράκη και η Ήπειρος.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">🏛️</div>
+                <div class="fc-content">Το 1881, η _____ (εκτός της περιοχής της Ελασσόνας) και η επαρχία της _____ ενσωματώθηκαν στο ελληνικό κράτος.</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Θεσσαλία, Άρτας</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">✂️</div>
+                <div class="fc-content">Ποια περιοχή προσάρτησαν οι Βούλγαροι το 1885, παραβιάζοντας τις αποφάσεις του συνεδρίου του Βερολίνου;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Την Ανατολική Ρωμυλία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🏝️</div>
+                <div class="fc-content">Ποια χώρα κήρυξε τον πόλεμο στη Βουλγαρία ως αντίδραση στην προσάρτηση της Α. Ρωμυλίας το 1885;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Σερβία.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">🇬🇷</div>
+                <div class="fc-content">Ορισμός: Μακεδονικό ζήτημα</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Ο αγώνας για τον έλεγχο της Μακεδονίας, που ήταν τότε τμήμα της Οθωμανικής αυτοκρατορίας.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">🇦🇹</div>
+                <div class="fc-content">Ποιοι τρεις λαοί διεκδικούσαν την ενσωμάτωση της Μακεδονίας;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Έλληνες, Βούλγαροι και Σέρβοι.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">💭</div>
+                <div class="fc-content">Πώς εκδηλώθηκε αρχικά η σύγκρουση για το μακεδονικό ζήτημα;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Ως αγώνας για τον έλεγχο της εκπαίδευσης και της θρησκευτικής συνείδησης των κατοίκων.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">⚔️</div>
+                <div class="fc-content">Ποια οργάνωση ιδρύθηκε το 1893 στη Θεσσαλονίκη από Βούλγαρους της Μακεδονίας;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Εσωτερική Μακεδονική Επαναστατική Οργάνωση (ΕΜΕΟ).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">💣</div>
+                <div class="fc-content">Ποιος ήταν ο διακηρυγμένος σκοπός της ΕΜΕΟ;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η ένωση των πληθυσμών Μακεδονίας και Θράκης για την αυτονόμηση της Μακεδονίας.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">🌍</div>
+                <div class="fc-content">Ποια οργάνωση σχηματίστηκε το 1895 στη Σόφια με στόχο την ένωση της Μακεδονίας με τη Βουλγαρία;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η Ανώτατη Μακεδονική Επιτροπή (Komitet).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">📜</div>
+                <div class="fc-content">Πώς ονομάζονταν οι ένοπλες ομάδες Βουλγάρων που οργανώθηκαν στη Μακεδονία γύρω στα 1898;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Κομιτατζήδες (από το Komitet = Επιτροπή).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">🇧🇬</div>
+                <div class="fc-content">Πότε έφτασαν στη Μακεδονία οι πρώτες ελληνικές ένοπλες ομάδες;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Την περίοδο 1896-1897.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🎩</div>
+                <div class="fc-content">Αναφέρετε τρεις Έλληνες που δραστηριοποιήθηκαν ενεργά στον μακεδονικό αγώνα.</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Ο μητροπολίτης Καστοριάς Γερμανός Καραβαγγέλης, ο Ίων Δραγούμης και ο Λάμπρος Κορομηλάς.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🏛️</div>
+                <div class="fc-content">Ποια οργάνωση οργάνωσε την εξέγερση του Ίλιντεν στη Μακεδονία τον Ιούλιο του 1903;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η ΕΜΕΟ (Εσωτερική Μακεδονική Επαναστατική Οργάνωση).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">✂️</div>
+                <div class="fc-content">Ποιος ήταν ο Έλληνας αξιωματικός που ξεχώρισε στον μακεδονικό αγώνα και άφησε την τελευταία του πνοή στη Μακεδονία;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Ο Παύλος Μελάς.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">🏝️</div>
+                <div class="fc-content">Ποια οργάνωση ίδρυσαν Τούρκοι αξιωματικοί και διανοούμενοι για να αντιδράσουν στην παρακμή της Οθωμανικής αυτοκρατορίας;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Την οργάνωση «Ένωση και Πρόοδος».</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">🇬🇷</div>
+                <div class="fc-content">Με ποια ονομασία έγιναν γνωστά τα μέλη της οργάνωσης «Ένωση και Πρόοδος»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Νεότουρκοι.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🇦🇹</div>
+                <div class="fc-content">Τι δείχνει η ονομασία «Νεότουρκοι» για την ταυτότητα των μελών της οργάνωσης;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Δείχνει ότι προέτασσαν την εθνική τους ταυτότητα (τουρκική) και όχι τη θρησκευτική (μουσουλμανική).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">💭</div>
+                <div class="fc-content">Πού και πότε ξέσπασε το κίνημα των Νεοτούρκων;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Στη Θεσσαλονίκη το καλοκαίρι του 1908.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">⚔️</div>
+                <div class="fc-content">Ποιες ήταν οι συνέπειες του κινήματος των Νεοτούρκων;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Υποχρεώθηκε ο σουλτάνος να παραχωρήσει σύνταγμα και δόθηκε αμνηστία στους ένοπλους Έλληνες και Βούλγαρους.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">💣</div>
+                <div class="fc-content">Με ποιο γεγονός έλαβε τέλος ο μακεδονικός αγώνας;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Με την επικράτηση του κινήματος των Νεοτούρκων και την παροχή αμνηστίας (1908).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">🌍</div>
+                <div class="fc-content">Ποιοι ήταν οι επικεφαλής της Οργάνωσης Κωνσταντινουπόλεως;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Οι Ίων Δραγούμης και Αθανάσιο Σουλιώτης-Νικολαΐδης.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">📜</div>
+                <div class="fc-content">Τι ήταν η Οργάνωση Κωνσταντινουπόλεως;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Ένας ανεπίσημος σύνδεσμος μεταξύ Ελλήνων και Νεοτούρκων.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🇧🇬</div>
+                <div class="fc-content">Ποιος ήταν ο στόχος της Οργάνωσης Κωνσταντινουπόλεως;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η μεταμόρφωση της Οθωμανικής αυτοκρατορίας σε ένα πολυεθνικό κράτος ισότητας και αδελφότητας.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-democracy">
+                <div class="fc-emoji">🎩</div>
+                <div class="fc-content">Ποιοι ήταν οι Αψβούργοι;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Μια από τις σημαντικότερες δυναστείες της Ευρώπης (Αυστριακή αυτοκρατορία).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-solon">
+                <div class="fc-emoji">🏛️</div>
+                <div class="fc-content">Τι σημαίνει η έκφραση «ελληνικές καλένδες»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Αναφέρεται σε κάθε αναβαλλόμενο ζήτημα ή στην αθέτηση υποσχέσεων (σημαίνει «ποτέ»).</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-peisistratos">
+                <div class="fc-emoji">✂️</div>
+                <div class="fc-content">Τι ονομάστηκε «ευρωπαϊκή συγχορδία»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η πολιτική των μεγάλων ευρωπαϊκών κρατών για τη διατήρηση της ισορροπίας και την αποφυγή συγκρούσεων.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-kleisthenis">
+                <div class="fc-emoji">🏝️</div>
+                <div class="fc-content">Ποια ήταν η «Μεγάλη Ιδέα»;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η ελληνική εθνική ιδέα για την επέκταση των συνόρων και την απελευθέρωση των αλύτρωτων Ελλήνων.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+            <div class="flashcard-front bg-aristocracy">
+                <div class="fc-emoji">🇬🇷</div>
+                <div class="fc-content">Ποιοι ήταν οι Ρωμανώφ;</div>
+                <div class="fc-hint">(Κλικ για απάντηση)</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="fc-content">Η δυναστεία της Ρωσικής αυτοκρατορίας.</div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="prevStep()">⟵ Πίσω</button>
+      </div>
+  </section>
+
+</main>
+
+<div id="print-summary"></div>
+
+<footer>
+  ✨✍️ Δημιουργία: Παναγιώτης Δόμβρος, Εκπαιδευτικός Αγγλικών-Θεατρολόγος, Με την Επιφύλαξη Παντός Δικαιώματος ✍️✨
+</footer>
+
+<button id="glossaryBtn" class="glossary-btn" onclick="toggleGlossary()">📖 Γλωσσάρι</button>
+
+<div id="glossaryModal" class="glossary-modal">
+  <div class="glossary-content">
+    <span class="close-modal" onclick="toggleGlossary()">&times;</span>
+    <h2 style="color:var(--royal-blue); margin-top:0;">Γλωσσάρι Όρων</h2>
+    <input type="text" id="glossarySearch" onkeyup="filterGlossary()" placeholder="Αναζήτηση όρου..." style="margin-bottom:15px;">
+    
+    <dl id="glossaryList" class="glossary-list">
+        <dt>Αψβούργοι</dt>
+        <dd>Εδώ, αναφέρεται στην Αυστριακή αυτοκρατορία. Ο οίκος των Αψβούργων υπήρξε μια από τις σημαντικότερες δυναστείες βασιλέων και αυτοκρατόρων της Αγίας Ρωμαϊκής αυτοκρατορίας μεταξύ 15ου και 18ου αιώνα, όπως επίσης και ως η δυναστεία της Αυστριακής και Ισπανικής αυτοκρατορίας, αλλά και άλλων ευρωπαϊκών βασιλείων.</dd>
+
+        <dt>Αυτοκρατορία</dt>
+        <dd>Εδώ, εννοείται η Οθωμανική αυτοκρατορία.</dd>
+
+        <dt>Ελληνικές καλένδες</dt>
+        <dd>Έκφραση με την οποία αναφέρεται κάθε αναβαλλόμενο ζήτημα ή η αθέτηση υποσχέσεων και σχετίζεται με τις «καλένδες», τις πρώτες ημέρες του ρωμαϊκού μηνολογίου.</dd>
+
+        <dt>Ευρωπαϊκή συγχορδία</dt>
+        <dd>Έτσι ονομάστηκε η πολιτική των μεγάλων ευρωπαϊκών κρατών, κατά το τέλος του 19ου αιώνα, για την αποφυγή ένοπλων συγκρούσεων και τη διευθέτηση ανάλογων περιπτώσεων, με κύριο στόχο τη διατήρηση της υπάρχουσας πολιτικής και διπλωματικής κατάστασης στην ευρωπαϊκή ήπειρο.</dd>
+
+        <dt>Realpolitik</dt>
+        <dd>Πολιτική που βασίζεται στον ρεαλισμό και στα πρακτικά συμφέροντα και όχι σε ιδεολογίες ή ηθικές αρχές. Χαρακτηριστική της διπλωματίας του Όττο φον Μπίσμαρκ.</dd>
+        
+        <dt>Πανσλαβισμός</dt>
+        <dd>Πολιτικό και πολιτιστικό κίνημα του 19ου αιώνα που αποσκοπούσε στην ένωση όλων των σλαβικών λαών, συχνά υπό την ηγεσία της Ρωσίας.</dd>
+        
+        <dt>Εδαφική Ακεραιότητα</dt>
+        <dd>Η αρχή κατά την οποία τα σύνορα ενός κράτους είναι απαραβίαστα. Στο Ανατολικό Ζήτημα, αφορούσε την πολιτική της Αγγλίας (αρχικά) για τη διατήρηση των συνόρων της Οθωμανικής Αυτοκρατορίας ώστε να μην επεκταθεί η Ρωσία.</dd>
+        
+        <dt>Εθνική Αφύπνιση & Μεγάλη Βουλγαρία</dt>
+        <dd>Η διαδικασία ανάπτυξης εθνικής συνείδησης από τους βαλκανικούς λαούς. Η «Μεγάλη Βουλγαρία» ήταν το βραχύβιο κράτος που προέβλεπε η Συνθήκη του Αγίου Στεφάνου, το οποίο περιλάμβανε το μεγαλύτερο μέρος της Μακεδονίας και έφτανε ως το Αιγαίο.</dd>
+
+        <dt>"Μεγάλη Ιδέα"</dt>
+        <dd>Η ελληνική εθνική ιδέα, που επικράτησε κατά τον 19ο αιώνα, για την επέκταση των συνόρων του νεοσύστατου ελληνικού κράτους και την απελευθέρωση των αλύτρωτων Ελλήνων.</dd>
+
+        <dt>Ρωμανώφ</dt>
+        <dd>Εδώ, αναφέρεται στη Ρωσική αυτοκρατορία. Ο οίκος των Ρωμανώφ υπήρξε η δυναστεία του βασιλείου της Ρωσίας και της Ρωσικής αυτοκρατορίας από το 1613 (Μιχαήλ Α΄) μέχρι την εκδήλωση της Οκτωβριανής Επανάστασης το 1917 (Νικόλαος Β΄).</dd>
+
+        <dt>Συνέδριο του Βερολίνου</dt>
+        <dd>Το Συνέδριο του Βερολίνου πραγματοποιήθηκε στο Βερολίνο (13 Ιουνίου - 13 Ιουλίου 1878) υπό την προεδρία του καγκελαρίου Βίσμαρκ και τη συμμετοχή αντιπροσώπων της Αγγλίας, Αυστροουγγαρίας, Γαλλίας, Ιταλίας, Οθωμανικής και Ρωσικής αυτοκρατορίας. Κύριος στόχος του Συνεδρίου αποτέλεσε η ανατροπή των ρυθμίσεων της Συνθήκης του Αγίου Στεφάνου.</dd>
+
+        <dt>Συνθήκη του Αγίου Στεφάνου</dt>
+        <dd>Διμερής Συνθήκη μεταξύ Ρωσικής και Οθωμανικής αυτοκρατορίας που υπογράφηκε στο προάστιο Άγιος Στέφανος της Κωνσταντινούπολης στις 3 Μαρτίου 1878, τερματίζοντας τον Ρωσοτουρκικό πόλεμο (1877-1878).</dd>
+    </dl>
+  </div>
+</div>
+
+<script>
+  /* --- Navigation --- */
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const indicator = document.getElementById('stepIndicator');
+  const glossaryBtn = document.getElementById('glossaryBtn');
+  let currentStep = 0;
+
+  function initDots() {
+    indicator.innerHTML = '';
+    steps.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+      indicator.appendChild(dot);
+    });
+  }
+  
+  function showStep(n) {
+    if(n < 0 || n >= steps.length) return;
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i === n);
+      document.querySelectorAll('.step-dot')[i].classList.toggle('active', i === n);
+    });
+    currentStep = n;
+    
+    // Logic for Glossary Button Visibility: Steps 3 (index 2) to 7 (index 6)
+    if (n >= 2 && n <= 6) {
+        glossaryBtn.style.display = 'block';
+    } else {
+        glossaryBtn.style.display = 'none';
+        document.getElementById('glossaryModal').style.display = 'none'; // Close if moving away
+    }
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function nextStep() { showStep(currentStep + 1); }
+  function prevStep() { showStep(currentStep - 1); }
+  initDots();
+
+  /* --- Glossary Logic --- */
+  function toggleGlossary() {
+      const modal = document.getElementById('glossaryModal');
+      modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+  }
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+      const modal = document.getElementById('glossaryModal');
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  }
+
+  function filterGlossary() {
+      const input = document.getElementById('glossarySearch');
+      const filter = input.value.toUpperCase();
+      const dl = document.getElementById("glossaryList");
+      const dts = dl.getElementsByTagName('dt');
+      const dds = dl.getElementsByTagName('dd');
+
+      for (let i = 0; i < dts.length; i++) {
+          const txtValue = dts[i].textContent || dts[i].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              dts[i].style.display = "";
+              dds[i].style.display = "";
+          } else {
+              dts[i].style.display = "none";
+              dds[i].style.display = "none";
+          }
+      }
+  }
+
+  /* --- Arguments --- */
+  function addArg(groupId) {
+    const container = document.getElementById(`arg-container-${groupId}`);
+    const div = document.createElement('div');
+    div.style.marginBottom = "8px";
+    div.innerHTML = `<textarea placeholder="Επιχείρημα..." class="arg-text" style="height:50px; font-size:0.9rem;"></textarea>`;
+    container.appendChild(div);
+  }
+  window.addEventListener('DOMContentLoaded', () => { for(let i=1; i<=5; i++) addArg(i); });
+
+  /* --- Voting & Charts --- */
+  const teamNames = ["Αγγλία/Δύση", "Ρωσία", "Ελλάδα", "Οθωμανική Αυτ.", "Βουλγαρία/Σλάβοι"];
+  const teamColors = ["var(--color-solon)", "var(--color-peisistratos)", "var(--color-kleisthenis)", "var(--color-aristocracy)", "var(--color-democracy)"];
+
+  function calcPreVote() {
+    let counts = []; let total = 0;
+    for(let i=1; i<=6; i++) {
+        let val = parseInt(document.getElementById(`pre-v${i}`).value)||0;
+        counts.push(val); total += val;
+    }
+    const chart = document.getElementById('pre-chart');
+    const res = document.getElementById('pre-results');
+    chart.innerHTML = '';
+    if(total===0) { res.innerText='Δεν βρέθηκαν ψήφοι.'; return; }
+    res.innerText = `Σύνολο Ψήφων: ${total}`;
+    
+    for(let i=0; i<5; i++) { 
+        let pct = ((counts[i]/total)*100).toFixed(1);
+        chart.appendChild(makeBar(teamNames[i], pct, teamColors[i]));
+    }
+    let pctUnd = ((counts[5]/total)*100).toFixed(1);
+    if(counts[5]>0) chart.appendChild(makeBar("Δ.Ξ./Δ.Α.", pctUnd, "#455a64"));
+  }
+
+  function calcPostVote() {
+    let counts = []; let total = 0;
+    for(let i=1; i<=5; i++) {
+        let val = parseInt(document.getElementById(`post-v${i}`).value)||0;
+        counts.push(val); total += val;
+    }
+    const chart = document.getElementById('post-chart');
+    const res = document.getElementById('post-results');
+    chart.innerHTML = '';
+    if(total===0) { res.innerText='Δεν βρέθηκαν ψήφοι.'; return; }
+
+    let maxVotes = -1; let winner = "";
+    for(let i=0; i<5; i++) {
+        let pct = ((counts[i]/total)*100).toFixed(1);
+        chart.appendChild(makeBar(teamNames[i], pct, teamColors[i]));
+        if(counts[i] > maxVotes) { maxVotes = counts[i]; winner = teamNames[i]; }
+        else if (counts[i] === maxVotes) { winner += " & " + teamNames[i]; }
+    }
+    res.innerHTML = `<div style="padding:10px; background:#fff9c4; border:1px solid var(--gold); text-align:center;">🏆 Νικητής Διπλωματίας: <strong>${winner}</strong></div>`;
+  }
+
+  function makeBar(label, pct, color) {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `<span class="bar-label">${label}</span>
+                     <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
+                     <span style="min-width:45px; font-weight:bold;">${pct}%</span>`;
+    return row;
+  }
+
+  /* --- Timer --- */
+  let timerInterval;
+  function startTimer() {
+    if(timerInterval) clearInterval(timerInterval);
+    let min = parseInt(document.getElementById('timer-min').value)||0;
+    let sec = parseInt(document.getElementById('timer-sec').value)||0;
+    let totalSec = min*60 + sec;
+    const display = document.getElementById('timer-display');
+    timerInterval = setInterval(() => {
+      if(totalSec <= 0) { clearInterval(timerInterval); display.innerText = "00:00"; alert("Ο χρόνος έληξε!"); return; }
+      totalSec--;
+      let m = Math.floor(totalSec/60); let s = totalSec % 60;
+      display.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }, 1000);
+  }
+  function resetTimer() { if(timerInterval) clearInterval(timerInterval); document.getElementById('timer-display').innerText = "00:00"; }
+
+  /* --- Rubric --- */
+  function calcRubric() {
+    let scores = [0,0,0,0,0];
+    for(let r=1; r<=3; r++) { 
+        for(let c=1; c<=5; c++) {
+             let val = parseInt(document.getElementById(`r${c}-c${r}`).value) || 0;
+             scores[c-1] += val;
+        }
+    }
+    let html = "ΣΚΟΡ: ";
+    for(let i=0; i<5; i++) { html += `${teamNames[i]}: ${scores[i]}/15 | `; }
+    document.getElementById('rubric-result').innerText = html;
+  }
+
+  /* --- Print --- */
+  function getMeta() {
+    const group = document.getElementById('meta-group').value || '-';
+    const date = document.getElementById('meta-date').value || '-';
+    return `<div style="border-bottom:1px solid #ccc; padding-bottom:10px; margin-bottom:20px;"><p><strong>Ομάδα:</strong> ${group} | <strong>Ημερομηνία:</strong> ${date}</p></div>`;
+  }
+  function getArgsText(groupId) {
+    const cards = document.querySelectorAll(`#arg-container-${groupId} .arg-text`);
+    let html = '<ul>';
+    cards.forEach(card => { if(card.value) html += `<li>${card.value}</li>`; });
+    return html + '</ul>';
+  }
+  function printArguments() {
+    const c = document.getElementById('print-summary');
+    let html = `<h1>Σημειώσεις Debate: Ανατολικό Ζήτημα</h1>${getMeta()}`;
+    for(let i=0; i<5; i++) { html += `<h3>${teamNames[i]}</h3>${getArgsText(i+1)}`; }
+    c.innerHTML = html; window.print();
+  }
+  function printAll() {
+    const c = document.getElementById('print-summary');
+    let html = `<h1>Τελική Αναφορά Συνεδρίου</h1>${getMeta()}`;
+    html += `<h2>Αποτελέσματα Ψηφοφορίας</h2><p>${document.getElementById('post-results').innerHTML}</p>`;
+    html += `<h2>Συμπεράσματα</h2><p>${document.getElementById('conclusion-text').value}</p>`;
+    html += `<h2>Επιχειρήματα Διπλωματικών Αποστολών</h2>`;
+    for(let i=0; i<5; i++) { html += `<h3>${teamNames[i]}</h3>${getArgsText(i+1)}`; }
+    html += `<hr><p><em>Υπογραφή Συντονιστή: __________________</em></p>`;
+    c.innerHTML = html; window.print();
+  }
+</script>
+
+</body>
+</html>
